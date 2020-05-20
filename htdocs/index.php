@@ -1,129 +1,14 @@
 <?php
-declare(strict_types=1);
-include './PDO/connection.php';
+include "config/autoload.php";
+include 'config/db.php';
 
-// class Formula1
-// {
-//   private $speed;
-//   public function drive( int $speed)
-//   {
-//     $this->speed = $speed;
-//     echo "vroom vroom at $this->speed km/h";
-//   }
-
-//     public function shiftGear(int $speed)
-//     {
-//       $this->speed = $this->speed + 15;
-//       echo "vroom vroom at". $this->speed." km/h";
-//     }
-
-// }
+// $db = new db(include "config/db.php");
+// $PersonnagesManager = new PersonnagesManager($db);
 
 
-
-// class Formule1
-// {
-//     private $speed = 0;
-
-//     function drive(){
-//         echo "Vroom vroom à ".$this->speed." km/h <br>";
-//     }
-
-//     function shiftGear(){
-//         $this->speed = $this->speed + 15; // 15km/h en + à chaque vitesse
-       
-
-//     }
-// }
-
-// $myFormule1 = new Formule1();
-// $myFormule1->drive();
-// $myFormule1->shiftGear();
-// $myFormule1->drive();
-// $myFormule1->shiftGear();
-// $myFormule1->drive();
-
-
-
-class CoffeeMachine
-  {
-  private $brand;
-  private $coffee;
-  private $isTurnedOn = false;
-
-  public function __construct(string $brand)
-  {
-    $this->brand = $brand;
-  }
-
-  public function power(bool $state){
-
-      $this->isTurnedOn = $state;
-      if($this->isTurnedOn){
-        echo $this->brand . " est en fonction <br>";
-      }else
-        echo "$this->brand est éteinte <br>";
-    }
-
-  public function putCoffeePod(){
-    if($this->isTurnedOn AND $this->coffee = true){
-      echo "Une dosette a été placée dans la machine " . $this->brand . "<br>";
-    }
-  }
-
-  public static function getMaximumSugarLevel(){
-    return 5;
-  }
-  // echo CoffeeMachine::getMaximumSugarLevel();
-
-  public function addsugar(int $level){
-    $this->level = $level;
-    if($this->isTurnedOn){
-      if($this->level > self::getMaximumSugarLevel() || $this->level < 0){
-        echo "Erreur : il n'est pas possible d'ajouter un niveau de sucre de " . $this->level . "<br>";
-      }else{
-        echo "Du sucre a été ajoutée ( niveau : $this->level /5 )  <br>";
-      }
-    }
-  }
-
-//  si la machine est éteinte alors impossible de faire du café
-
-  public function makeCoffee(){
-
-    if(!$this->isTurnedOn){
-      echo "Impossible de faire du café : ".$this->brand ." est éteinte <br>";
-    }
-    if($this->isTurnedOn AND $this->coffee = true){
-      if($this->level < CoffeeMachine::getMaximumSugarLevel() || !$this->level > 0){
-        echo "Le café est prêt dans la machine $this->brand !<br>";
-      }
-    }
-  }
-}
-
-$machine = new CoffeeMachine("Senseo");
-
-//ceci doit déclencher une erreur 
-$machine->makeCoffee();
-
-$machine->power(true);
-
-$machine->putCoffeePod();
-
-//ceci doit déclencher une erreur 
-$machine->addSugar(6);
-
-
-$machine->addSugar(3);
-
-$machine->makeCoffee();
-
-$machine->power(false);
 
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -150,6 +35,11 @@ $machine->power(false);
 
 <body>
 
+  <form action="" method="">
+    <input type="text" id="nom" name="nom" value="olivier">
+    <button type="submit">PLAY</button>
+  </form>
+
   
 
 
@@ -165,7 +55,6 @@ $machine->power(false);
 
 </html>
 <?php
-/**
- * 
+
 
     
