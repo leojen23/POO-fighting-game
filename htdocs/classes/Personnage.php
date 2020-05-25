@@ -1,89 +1,117 @@
 <?php
-include "../config/autoload.php";
-include "../config/db.php";
-
 class Personnage
 {
-    // character properties
-    private $id;
-    private $nom;
-    private $degats;
-   
-    public static $count = 0;
-
-    const CEST_MOI = 1;
-    const PERSONNAGE_TUE = 2;
-    const PERSONNAGE_FRAPPE = 3;
+  private $_id,
+          $_degats,
+          $_nom;
+  
+  const CEST_MOI = 1;
+  const PERSONNAGE_TUE = 2;
+  const PERSONNAGE_FRAPPE = 3;
 
 
-    public function __construct($id, $nom, $degats)
+  public function __construct(array $donnees)
+  {
+    $this->hydrate($donnees);
+  }
+
+  
+  public function hydrate(array $donnees)
+  {
+    foreach ($donnees as $key => $value)
     {
-      $this->setId($id); // Initialisation de l'id.
-      $this->setDegats($degats); // Initialisation des dégâts.
-      $this->setNom($nom); // Initialisation du nom
+      $method = 'set'.ucfirst($key);
+      
+      if (method_exists($this, $method))
+      {
+        $this->$method($value);
+      }
     }
-  
-    public function frapper(Personnage $persoAFrapper){
+  }
 
-        if ($this->getId() == $persoAFrapper->getId()){
-            return self::CEST_MOI;
-        }else{
-            return $persoAFrapper->recevoirDegats();
-        }
-    }
-
-    public function recevoirDegats(){
-        
-        $this->setDegats($this->setDegats(int $degats) += 10);
-        if($this->setDegats >= 100){
-            return self::PERSONNAGE_TUE;
-        }
-        return self::PERSONNAGE_FRAPPE;
-    }
-
-// GETTERS--------------------------------------------------
-
-    public function getDegats()
+  public function nomValide()
   {
-    return $this->degats;
+    return !empty($this->_nom);
   }
   
-  public function getId()
+  
+
+  
+  public function frapper(Personnage $perso)
   {
-    return $this->id;
+    if ($perso->id() == $this->_id)
+    {
+      return self::CEST_MOI;
+    }
+    
+    // On indique au personnage qu'il doit recevoir des dégâts.
+    // Puis on retourne la valeur renvoyée par la méthode : self::PERSONNAGE_TUE ou self::PERSONNAGE_FRAPPE
+    return $perso->recevoirDegats();
   }
   
-  public function getNom()
+  
+  public function recevoirDegats()
   {
-    return $this->nom;
+    $this->_degats += 5;
+    
+    // Si on a 100 de dégâts ou plus, on dit que le personnage a été tué.
+    if ($this->_degats >= 100)
+    {
+      return self::PERSONNAGE_TUE;
+    }
+    
+    // Sinon, on se contente de dire que le personnage a bien été frappé.
+    return self::PERSONNAGE_FRAPPE;
   }
   
-  // SETTERS--------------------------------------------------
-  public function setDegats(int $degats)
-  {    
+  public function degats()
+  {
+    return $this->_degats;
+  }
+  
+  public function id()
+  {
+    return $this->_id;
+  }
+  
+  public function nom()
+  {
+    return $this->_nom;
+  }
+  
+  public function setDegats($degats)
+  {
+    $degats = (int) $degats;
+    
     if ($degats >= 0 && $degats <= 100)
     {
-      $this->degats = $degats;
+      $this->_degats = $degats;
     }
   }
   
-  public function setId(int $id)
+  public function setId($id)
   {
-    if ($id <= 0)
+    $id = (int) $id;
+    
+    if ($id > 0)
     {
-        throw new Exception("L'id doit être supérieur à zéro");
+      $this->_id = $id;
     }
-    $this->id = $id;
   }
-
-  public function setNom(string $nom)
+  
+  public function setNom($nom)
   {
-      $this->nom = $nom;
+    if (is_string($nom))
+    {
+      $this->_nom = $nom;
+    }
   }
 }
 
-$Pablo = new Personnage(1, "Pablo", 150);
-$Usher = new Personnage(2, "Usher", 0);
-// print_r($User);
+// $Pablo = new Personnage(1, "Pablo", 0);
+// $Usher = new Personnage(2, "Usher", 0);
+// // print_r($User);
 
-$Usher->frapper($Pablo);
+// $Pablo->frapper($Usher, 10);
+// $Pablo->frapper($Usher, 40);
+// $Pablo->frapper($Usher, 10);
